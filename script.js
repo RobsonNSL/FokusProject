@@ -98,7 +98,7 @@ function iniciarOuPausar() {
         return;
     }
 
-    musicaIniciar.play()
+    //  musicaIniciar.play()
     intervalorId = setInterval(contagemRegressiva, 1000);
     iniciarOuPausarBtn.textContent = "Pausar"
     iniciarOuPausarImg.setAttribute('src', `/imagens/pause.png`)
