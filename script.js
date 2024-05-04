@@ -19,7 +19,7 @@ const musicaFocoInput = document.querySelector("#alternar-musica");
 const musica = new Audio('./sons/luna-rise-part-one.mp3');
 musica.loop = true;
 
-let tempoDecorridoEmSegundos = 1500;
+let tempoDecorridoEmSegundos = 1;
 let intervalorId = null;
 
 musicaFocoInput.addEventListener('change', () => {
@@ -31,26 +31,25 @@ musicaFocoInput.addEventListener('change', () => {
 })
 
 focoBtn.addEventListener('click', () => {
-    tempoDecorridoEmSegundos = 1500;
+    tempoDecorridoEmSegundos = 1;
     alterarContexto('foco');
     focoBtn.classList.add('active');
 });
 
 curtoBtn.addEventListener('click', () => {
-    tempoDecorridoEmSegundos = 300;
+    tempoDecorridoEmSegundos = 1;
     alterarContexto('descanso-curto')
     curtoBtn.classList.add('active')
 });
 
 longoBtn.addEventListener('click', () => {
-    tempoDecorridoEmSegundos = 900;
+    tempoDecorridoEmSegundos = 1;
     alterarContexto("descanso-longo");
     longoBtn.classList.add('active');
 });
 
 function alterarContexto(event) {
     mostrarTempo();
-    iniciarOuPausar();
     allBtn.forEach(function (event) {
         event.classList.remove('active');
     })
@@ -80,6 +79,11 @@ const contagemRegressiva = () => {
     if (tempoDecorridoEmSegundos <= 0) {
         musicaAlerta.play();
         alert("Tempo terminado!");
+        const focoAtivo = html.getAttribute('data-contexto') == 'foco' || 'descanso-curto' || 'descanso-longo';
+        if (focoAtivo) {
+            const evento = new CustomEvent('FocoFinalizado');
+            document.dispatchEvent(evento);
+        }
         zerar();
         return;
     }
